@@ -41,13 +41,14 @@ products.forEach((product) => {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart">
+      <div class="added-to-cart js-added-to-cart-${product.id}">
         <img src="images/icons/checkmark.png">
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id=${product.id
-    }>
+      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id=${
+        product.id
+      }>
         Add to Carts
       </button>
     </div>
@@ -55,6 +56,8 @@ products.forEach((product) => {
 });
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
+
+const addedMessageTimeouts = {};
 
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
@@ -70,12 +73,14 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
       }
     });
 
-    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+    const quantitySelector = document.querySelector(
+      `.js-quantity-selector-${productId}`
+    );
 
     const quantitySelected = Number(quantitySelector.value);
 
     if (matchingItem) {
-      matchingItem.quantity += quanitySelected;;
+      matchingItem.quantity += quantitySelected;
     } else {
       cart.push({
         productId: productId,
@@ -90,6 +95,25 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     });
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+
+    // to make the Added message popup:
+    const addedMessage = document.querySelector(
+      `.js-added-to-cart-${productId}`
+    );
+    addedMessage.classList.add('added-to-cart-visible');
+
+    //set up timeout
+    // we need to check if there is any previous timeoutId. if so, clear it by using clearTimeout:
+    const previousTimeoutId = addedMessageTimeouts[productId];
+    if (previousTimeoutId) {
+      clearTimeout(previousTimeoutId);
+    }
+
+    const timeoutId = setTimeout(() => {
+      addedMessage.classList.remove('added-to-cart-visible');
+    }, 2000);
+
+    // save the timeoutId for this product ID:
+    addedMessageTimeouts[productId] = timeoutId;
   });
 });
-
