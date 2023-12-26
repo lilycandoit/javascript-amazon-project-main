@@ -58,11 +58,8 @@ products.forEach((product) => {
 });
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
-// we have to use an object to save timeoutI because each product has a different timeoutId
 
-const addedMessageTimeouts = {};
-
-function updateCartQuantity(){
+function updateCartQuantity() {
   let cartQuantity = 0;
 
   cart.forEach((cartItem) => {
@@ -70,6 +67,7 @@ function updateCartQuantity(){
   });
 
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+  console.log(cartQuantity)
 }
 
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
@@ -82,28 +80,26 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     addToCart(productId);
     updateCartQuantity();
 
+    // to make the Added message popup:
+    const addedMessage = document.querySelector(
+      `.js-added-to-cart-${productId}`
+    );
+    addedMessage.classList.add('added-to-cart-visible');
 
-    // to make the Added Message pop up
-    const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
-    addedMessage.classList.add('added-to-cart--visible');
-
-    // handle timeout:
-    //check if there is a previous timeoutId, if so, skip it by using clearTimeout:
-
-    const previuosTimeoutId = addedMessageTimeouts[productId];
-    if (previuosTimeoutId) {
-      clearTimeout(previuosTimeoutId);
+    //set up timeout
+    // we have to use an object to save timeoutI because each product has a different timeoutId
+    const addedMessageTimeouts = {};
+    // we need to check if there is any previous timeoutId. if so, clear it by using clearTimeout:
+    const previousTimeoutId = addedMessageTimeouts[productId];
+    if (previousTimeoutId) {
+      clearTimeout(previousTimeoutId);
     }
 
-
-    // if the productId is not in the addedMessageTimeouts object, create a new one
     const timeoutId = setTimeout(() => {
-      addedMessage.classList.remove('added-to-cart--visible');
-    }, 2000)
+      addedMessage.classList.remove('added-to-cart-visible');
+    }, 2000);
 
-    //save the timeoutId for this product ID:
+    // save the timeoutId for this product ID:
     addedMessageTimeouts[productId] = timeoutId;
-
   });
 });
-
