@@ -1,4 +1,3 @@
-
 import { cart } from '../data/cart.js';
 import { products } from '../data/products.js';
 
@@ -9,14 +8,16 @@ cart.forEach((cartItem) => {
 
   let matchingProduct;
 
-  products.forEach(product => {
+  products.forEach((product) => {
     if (product.id === productId) {
       matchingProduct = product;
     }
   });
 
   cartSummaryHTML += `
-    <div class="cart-item-container js-cart-item-                      container-${matchingProduct.id}">
+    <div class="cart-item-container js-cart-item-             container-${
+      matchingProduct.id
+    }">
       <div class="delivery-date">
         Delivery date: Tuesday, June 21
       </div>
@@ -94,5 +95,4 @@ cart.forEach((cartItem) => {
   `;
 });
 
-console.log(cartSummaryHTML);
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
