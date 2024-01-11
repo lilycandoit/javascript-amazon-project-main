@@ -1,4 +1,9 @@
-import { cart, removeFromCart, calculateCartQuantity } from '../data/cart.js';
+import {
+  cart,
+  removeFromCart,
+  calculateCartQuantity,
+  updateCart,
+} from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
@@ -36,7 +41,9 @@ cart.forEach((cartItem) => {
           </div>
           <div class="product-quantity">
             <span>
-              Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+              Quantity: <span class="quantity-label js-quantity-label-${
+                matchingProduct.id
+              }">${cartItem.quantity}</span>
             </span>
             <span class="update-quantity-link link-primary js-update-link" data-product-id=${
               matchingProduct.id
@@ -44,8 +51,12 @@ cart.forEach((cartItem) => {
               Update
             </span>
             
-            <input class="quantity-input">
-            <span class="save-quantity-link link-primary"> Save </span>
+            <input class="quantity-input js-quantity-input-${
+              matchingProduct.id
+            }">
+            <span class="save-quantity-link link-primary js-save-link" data-product-id="${
+              matchingProduct.id
+            }"> Save </span>
             <span class="delete-quantity-link link-primary js-delete-link" data-product-id=${
               matchingProduct.id
             }>
@@ -131,9 +142,41 @@ updateCartQuantity();
 document.querySelectorAll('.js-update-link').forEach((link) => {
   link.addEventListener('click', () => {
     const productId = link.dataset.productId;
-    
-    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`
+    );
 
     container.classList.add('is-editing-quantity');
+  });
+});
+
+document.querySelectorAll('.js-save-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
+
+    //we need to move the quantity related code up because if the newQuantity is not valid, we should return early or NOT run the rest of the code. this is call "early return".
+    const newQuantity = Number(
+      document.querySelector(`.js-quantity-input-${productId}`).value
+    );
+
+    if (newQuantity < 0 || newQuantity >= 1000) {
+      alert('Quantity must be at least 0 or less than 1000');
+      return;
+    }
+    updateCart(productId, newQuantity);
+
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`
+    );
+                                                                                                                                                                                                                                                                        
+    container.classList.remove('is-editing-quantity');
+
+    const quantityLabel = document.querySelector(
+      `.js-quantity-label-${productId}`
+    );
+    quantityLabel.innerHTML = newQuantity;
+
+    updateCartQuantity();
   });
 });
