@@ -169,7 +169,7 @@ document.querySelectorAll('.js-save-link').forEach((link) => {
     const container = document.querySelector(
       `.js-cart-item-container-${productId}`
     );
-                                                                                                                                                                                                                                                                        
+
     container.classList.remove('is-editing-quantity');
 
     const quantityLabel = document.querySelector(
