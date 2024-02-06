@@ -53,10 +53,10 @@ cart.forEach((cartItem) => {
             
             <input class="quantity-input js-quantity-input-${
               matchingProduct.id
-            }">
-            <span class="save-quantity-link link-primary js-save-link" data-product-id="${
+            }" data-product-id=${matchingProduct.id}>
+            <span class="save-quantity-link link-primary js-save-link" data-product-id=${
               matchingProduct.id
-            }"> Save </span>
+            }> Save </span>
             <span class="delete-quantity-link link-primary js-delete-link" data-product-id=${
               matchingProduct.id
             }>
@@ -119,6 +119,19 @@ document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 document.querySelectorAll('.js-delete-link').forEach((link) => {
   link.addEventListener('click', () => {
     const productId = link.dataset.productId;
+    const selectedItemQuantity = Number(
+      document.querySelector(`.js-quantity-label-${productId}`).innerHTML
+    );
+    var cartQuantity = calculateCartQuantity();
+    console.log(cartQuantity);
+
+    var cartAfterDeleted = cartQuantity - selectedItemQuantity;
+    console.log('hiii', cartAfterDeleted);
+    // update checkout items after deleting
+    document.querySelector(
+      '.js-return-to-home-link'
+    ).innerHTML = `${cartAfterDeleted} items`;
+
     removeFromCart(productId);
 
     const container = document.querySelector(
@@ -148,6 +161,38 @@ document.querySelectorAll('.js-update-link').forEach((link) => {
     );
 
     container.classList.add('is-editing-quantity');
+  });
+});
+
+document.querySelectorAll('.quantity-input').forEach((link) => {
+  link.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      const productId = link.dataset.productId;
+
+      //we need to move the quantity related code up because if the newQuantity is not valid, we should return early or NOT run the rest of the code. this is call "early return".
+      const newQuantity = Number(
+        document.querySelector(`.js-quantity-input-${productId}`).value
+      );
+
+      if (newQuantity < 0 || newQuantity >= 1000) {
+        alert('Quantity must be at least 0 or less than 1000');
+        return;
+      }
+      updateCart(productId, newQuantity);
+
+      const container = document.querySelector(
+        `.js-cart-item-container-${productId}`
+      );
+
+      container.classList.remove('is-editing-quantity');
+
+      const quantityLabel = document.querySelector(
+        `.js-quantity-label-${productId}`
+      );
+      quantityLabel.innerHTML = newQuantity;
+
+      updateCartQuantity();
+    }
   });
 });
 
