@@ -8,7 +8,11 @@ import {
 import { getProduct, products } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import {
+  deliveryOptions,
+  getDeliveryOption,
+} from '../../data/deliveryOptions.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 // const today = dayjs();
 // const deliveryDate = today.add(7, 'days');
 // console.log(deliveryDate.format('dddd, MMMM D'));
@@ -24,7 +28,6 @@ export function renderOrderSummary() {
     const deliveryOptionId = cartItem.deliveryOptionId;
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
-
 
     const today = dayjs();
     const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
@@ -121,8 +124,6 @@ export function renderOrderSummary() {
     });
 
     return html;
-    console.log(html);
-    console.log('hiiii');
   }
 
   document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
@@ -134,10 +135,8 @@ export function renderOrderSummary() {
         document.querySelector(`.js-quantity-label-${productId}`).innerHTML
       );
       var cartQuantity = calculateCartQuantity();
-      console.log(cartQuantity);
 
       var cartAfterDeleted = cartQuantity - selectedItemQuantity;
-      console.log('hiii', cartAfterDeleted);
       // update checkout items after deleting
       document.querySelector(
         '.js-return-to-home-link'
@@ -150,6 +149,9 @@ export function renderOrderSummary() {
       );
 
       container.remove();
+
+      //regenerating HTML for payment summary after deleting items in order summary.
+      renderPaymentSummary();
     });
   });
 
@@ -237,11 +239,13 @@ export function renderOrderSummary() {
     });
   });
 
+  // to make the shipping interactive (without reloading the page)
   document.querySelectorAll('.js-delivery-option').forEach((element) => {
     element.addEventListener('click', () => {
       const { productId, deliveryOptionId } = element.dataset; //using shorthand property
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 }
