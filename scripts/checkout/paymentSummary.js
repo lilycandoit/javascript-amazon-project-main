@@ -19,13 +19,16 @@ export function renderPaymentSummary() {
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
   const taxCents = totalBeforeTaxCents * 0.1;
   const totalCents = totalBeforeTaxCents + taxCents;
+  const totalItems = document
+    .querySelector('.js-return-to-home-link')
+    .innerText.split(' ')[0];
 
   //create HTML (View)
   const paymentSummaryHTML = `
     <div class="payment-summary-title">Order Summary</div>
 
     <div class="payment-summary-row">
-      <div>Items (3):</div>
+      <div>Items (${totalItems}):</div>
       <div class="payment-summary-money">${formatCurrency(
         productPriceCents
       )}</div>
