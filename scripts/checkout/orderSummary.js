@@ -13,6 +13,7 @@ import {
   getDeliveryOption,
 } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './checkoutHeader.js';
 // const today = dayjs();
 // const deliveryDate = today.add(7, 'days');
 // console.log(deliveryDate.format('dddd, MMMM D'));
@@ -131,18 +132,9 @@ export function renderOrderSummary() {
   document.querySelectorAll('.js-delete-link').forEach((link) => {
     link.addEventListener('click', () => {
       const productId = link.dataset.productId;
-      const selectedItemQuantity = Number(
-        document.querySelector(`.js-quantity-label-${productId}`).innerHTML
-      );
-      var cartQuantity = calculateCartQuantity();
-
-      var cartAfterDeleted = cartQuantity - selectedItemQuantity;
-      // update checkout items after deleting
-      document.querySelector(
-        '.js-return-to-home-link'
-      ).innerHTML = `${cartAfterDeleted} items`;
 
       removeFromCart(productId);
+      renderCheckoutHeader();
 
       // const container = document.querySelector(
       //   `.js-cart-item-container-${productId}`
@@ -156,16 +148,6 @@ export function renderOrderSummary() {
       renderPaymentSummary();
     });
   });
-
-  function updateCartQuantity() {
-    const cartQuantity = calculateCartQuantity();
-
-    document.querySelector(
-      '.js-return-to-home-link'
-    ).innerHTML = `${cartQuantity} items`;
-  }
-
-  updateCartQuantity();
 
   document.querySelectorAll('.js-update-link').forEach((link) => {
     link.addEventListener('click', () => {
@@ -206,7 +188,7 @@ export function renderOrderSummary() {
         );
         quantityLabel.innerHTML = newQuantity;
 
-        updateCartQuantity();
+        renderCheckoutHeader();
         renderPaymentSummary();
       }
     });
@@ -238,7 +220,7 @@ export function renderOrderSummary() {
       );
       quantityLabel.innerHTML = newQuantity;
 
-      updateCartQuantity();
+      renderCheckoutHeader();
       renderPaymentSummary();
     });
   });
