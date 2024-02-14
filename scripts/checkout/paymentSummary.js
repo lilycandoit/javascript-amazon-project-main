@@ -19,9 +19,13 @@ export function renderPaymentSummary() {
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
   const taxCents = totalBeforeTaxCents * 0.1;
   const totalCents = totalBeforeTaxCents + taxCents;
-  const totalItems = document
-    .querySelector('.js-return-to-home-link')
-    .innerText.split(' ')[0];
+
+  //calculate total items in payment summary:
+  let totalItems = 0;
+
+  cart.forEach((cartItem) => {
+    totalItems += cartItem.quantity;
+  });
 
   //create HTML (View)
   const paymentSummaryHTML = `

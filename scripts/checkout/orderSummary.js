@@ -144,11 +144,13 @@ export function renderOrderSummary() {
 
       removeFromCart(productId);
 
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`
-      );
+      // const container = document.querySelector(
+      //   `.js-cart-item-container-${productId}`
+      // );
+      // container.remove();
 
-      container.remove();
+      //instead of using DOM and updating the page directly with .remove() like above, we can regenerate the order summary:
+      renderOrderSummary();
 
       //regenerating HTML for payment summary after deleting items in order summary.
       renderPaymentSummary();
