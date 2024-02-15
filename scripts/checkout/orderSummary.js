@@ -7,10 +7,10 @@ import {
 } from '../../data/cart.js';
 import { getProduct, products } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import {
   deliveryOptions,
   getDeliveryOption,
+  calculateDeliveryDate,
 } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 import { renderCheckoutHeader } from './checkoutHeader.js';
@@ -30,16 +30,14 @@ export function renderOrderSummary() {
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
+    calculateDeliveryDate(deliveryOption);
 
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${
         matchingProduct.id
       }">
         <div class="delivery-date">
-          Delivery date: ${dateString}
+          Delivery date: ${calculateDeliveryDate(deliveryOption)}
         </div>
 
         <div class="cart-item-details-grid">
@@ -94,9 +92,7 @@ export function renderOrderSummary() {
     let html = '';
 
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-      const dateString = deliveryDate.format('dddd, MMMM D');
+      calculateDeliveryDate(deliveryOption);
       const priceString =
         deliveryOption.priceCents === 0
           ? 'FREE'
@@ -114,7 +110,7 @@ export function renderOrderSummary() {
           name="delivery-option-${matchingProduct.id}">
         <div>
           <div class="delivery-option-date">
-            ${dateString}
+            ${calculateDeliveryDate(deliveryOption)}
           </div>
           <div class="delivery-option-price">
             ${priceString} Shipping
@@ -188,6 +184,7 @@ export function renderOrderSummary() {
         );
         quantityLabel.innerHTML = newQuantity;
 
+        // updateCart(productId, newQuantity);
         renderCheckoutHeader();
         renderPaymentSummary();
       }
@@ -214,11 +211,16 @@ export function renderOrderSummary() {
       );
 
       container.classList.remove('is-editing-quantity');
+      
 
-      const quantityLabel = document.querySelector(
-        `.js-quantity-label-${productId}`
-      );
-      quantityLabel.innerHTML = newQuantity;
+
+      // const quantityLabel = document.querySelector(
+      //   `.js-quantity-label-${productId}`
+      // );
+      // quantityLabel.innerHTML = newQuantity;
+
+      //update the page instead of update via DOM like above >> that's called MCV
+      updateCart(productId, newQuantity);
 
       renderCheckoutHeader();
       renderPaymentSummary();
