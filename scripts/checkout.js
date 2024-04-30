@@ -4,7 +4,7 @@ import { renderPaymentSummary } from './checkout/paymentSummary.js';
 
 // practice OOP (object oriented programing)
 // import '../data/cart-oop.js';
-import '../data/cart-class.js';
+// import '../data/cart-class.js';
 
 renderCheckoutHeader();
 renderOrderSummary();
