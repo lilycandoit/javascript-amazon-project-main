@@ -2,16 +2,16 @@
 
 class Cart {
   cartItems; // same as: cartItems = undefined;
-  localStorageKey; //same as: localStorageKey = undefined;
+  #localStorageKey; //same as: localStorageKey = undefined;
 
   constructor(key) {
     //it's function, can use param "key" to make it dynamic
-    this.localStorageKey = key;
-    this.loadFromStorage();
+    this.#localStorageKey = key;
+    this.#loadFromStorage();
   }
 
-  loadFromStorage() {
-    this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+  #loadFromStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
 
     if (!this.cartItems) {
       this.cartItems = [
@@ -30,7 +30,7 @@ class Cart {
   }
 
   saveToStorage() {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
   }
 
   addToCart(productId) {
