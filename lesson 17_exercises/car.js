@@ -56,3 +56,41 @@ const cars = [
 });
 
 cars.forEach((car) => console.log(car.displayInfo(), car.go(), car.brake()));
+
+class RaceCar extends Car {
+  accelaration;
+
+  constructor(carInfo) {
+    super(carInfo);
+    this.accelaration = carInfo.accelaration;
+  }
+
+  go() {
+    this.speed += this.accelaration;
+
+    if (this.speed > 3000) {
+      this.speed = 300;
+    }
+  }
+
+  openTrunk() {
+    console.log('Race cars do not have a trunk');
+  }
+
+  closeTrunk() {
+    console.log('Race cars do not have a trunk');
+  }
+}
+
+const raceCar = new RaceCar({
+  brand: 'MCLaren',
+  model: 'F1',
+  accelaration: 20,
+});
+
+console.log(raceCar);
+console.log(raceCar.displayInfo());
+console.log(raceCar.openTrunk());
+console.log(raceCar.brake());
+console.log(raceCar.displayInfo());
+console.log(raceCar.closeTrunk());
