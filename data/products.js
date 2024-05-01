@@ -57,6 +57,25 @@ class Clothing extends Product {
   }
 }
 
+//exercise 17h
+class Appliance extends Product {
+  instructionsLink;
+  warrantyLink;
+
+  constructor(productDetails) {
+    super(productDetails);
+    this.instructionsLink = productDetails.instructionsLink;
+    this.warrantyLink = productDetails.warrantiyLink;
+  }
+
+  extraInfoHTML() {
+    return `
+      <a href = '${this.instructionsLink}' target = '_blank'>Instructions</a>
+      <a href = '${this.warrantyLink}' target = '_blank'>Warranty</a>
+    `;
+  }
+}
+
 export const products = [
   {
     id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
@@ -531,6 +550,9 @@ export const products = [
 ].map((productDetails) => {
   if (productDetails.type === 'clothing') {
     return new Clothing(productDetails);
+  }
+  if (productDetails.keywords.includes('appliances')) {
+    return new Appliance(productDetails);
   }
   return new Product(productDetails);
 });
