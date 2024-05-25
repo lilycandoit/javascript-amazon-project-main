@@ -8,12 +8,25 @@ import { loadProducts } from '../data/products.js';
 // import '../data/cart-class.js';
 //import '../data/backend_practice.js';
 
+/*
 loadProducts(() => {
   renderCheckoutHeader();
   renderOrderSummary();
   renderPaymentSummary();
 });
+*/
 
 // note1: the param of FUNCION loadProducts other than variable/ name/ a function name, it can also be anonymous function - which is the function without name.
 
 // note2: setTimeOut is another example of Call back function
+
+//------PROMISE------
+new Promise((resolve) => {
+  loadProducts(() => {
+    resolve();
+  });
+}).then(() => {
+  renderCheckoutHeader();
+  renderOrderSummary();
+  renderPaymentSummary();
+});
