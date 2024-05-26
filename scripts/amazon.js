@@ -5,8 +5,7 @@ import { formatCurrency } from './utils/money.js';
 loadProducts(renderProductsGrid);
 // the function can be the param to put in another function
 
-function renderProductsGrid(){
-
+function renderProductsGrid() {
   let productsHTML = '';
 
   products.forEach((product) => {
