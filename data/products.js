@@ -94,13 +94,13 @@ export function loadProductsFetch(fun) {
         return new Product(productDetails);
       });
 
-      console.log('products loaded', products);
+      console.log('product fetched', products);
+    }).catch((error) => {
+      console.log('Unexpected error. Please try again later')
     });
 
   return promise;
 }
-
-
 
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
@@ -116,7 +116,7 @@ export function loadProducts(fun) {
       return new Product(productDetails);
     });
 
-    console.log('products loaded', products);
+    console.log('hiiii, products loaded', products);
 
     //only after loading the response of request, we will run the function name fun
     fun();
