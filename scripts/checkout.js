@@ -24,13 +24,23 @@ loadProducts(() => {
 //------PROMISE------
 
 async function loadPage() {
-  await loadProductsFetch();
+  try {
+    //throw 'error 1';
 
-  const value = await new Promise((resolve) => {
-    loadCart(() => {
-      resolve();
+    await loadProductsFetch();
+
+    const value = await new Promise((resolve, reject) => {
+      //throw 'error2';
+
+      loadCart(() => {
+        //reject();
+        
+        resolve();
+      });
     });
-  });
+  } catch (error) {
+    console.log('Please try again later');
+  }
 
   renderCheckoutHeader();
   renderOrderSummary();
