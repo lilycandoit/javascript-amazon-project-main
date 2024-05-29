@@ -38,6 +38,7 @@ async function loadPage() {
         resolve();
       });
     });
+
   } catch (error) {
     console.log('Please try again later');
   }

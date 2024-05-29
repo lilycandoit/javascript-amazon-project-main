@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Lesson 19 exercises</title>
+  </head>
+  <body>
+    <p>Helloo there</p>
+    <p>This is exercises for <strong>Lesson 18</strong></p>
+
+    <!-- exercises -->
+    <script>
+      // 18a
+      /*
+      const xhr = new XMLHttpRequest();
+
+      xhr.addEventListener('load', () => {
+        console.log(xhr.response);
+      });
+
+      xhr.open('GET', 'https://supersimplebackend.dev/greeting');
+      xhr.send();
+      */
+
+      //18b
+      /*
+      fetch('https://supersimplebackend.dev/greeting')
+        .then((response) => {
+          return response.text();
+        })
+        .then((data) => {
+          console.log(data);
+        });
+
+        //note: with text we will use response.text 
+        */
+
+      //18c
+      /*
+      async function getGreeting() {
+        const response = await fetch('https://supersimplebackend.dev/greeting');
+
+        const text = await response.text();
+        console.log(text);
+      }
+      getGreeting();
+      */
+
+      //18d
+      async function sendName() {
+        try {
+          const response = await fetch(
+            'https://abc.supersimplebackend.dev/greeting',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ name: 'Lily' }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error, status: ${response.status}`);
+          }
+
+          const text = await response.text();
+
+          console.log(text);
+        } catch (error) {
+          console.log('error sending name');
+        }
+      }
+
+      sendName();
+    </script>
+  </body>
+</html>
