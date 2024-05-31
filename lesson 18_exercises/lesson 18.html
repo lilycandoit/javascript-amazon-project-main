@@ -51,6 +51,7 @@
       */
 
       //18d
+      /*
       async function sendName() {
         try {
           const response = await fetch(
@@ -77,6 +78,23 @@
       }
 
       sendName();
+      */
+
+      //18e
+
+      const xhr = new XMLHttpRequest();
+
+      xhr.addEventListener('load', () => {
+        console.log(xhr.response);
+      });
+
+      xhr.open('GET', 'https://amazon.com');
+
+      xhr.send();
+
+      xhr.addEventListener('error', () => {
+        console.log('CORS error. Your request was blocked by the backend');
+      });
     </script>
   </body>
 </html>
